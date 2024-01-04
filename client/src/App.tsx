@@ -1,11 +1,10 @@
-import './App.css'
 import { Loader, Navbar, Footer, Welcome, Transactions, Services } from './components'
 
 function App() {
 
   return (
-    <>
-      <div>
+    <div className="min-h-screen">
+      <div className="gradient-bg-welcome">
         <Navbar />
         <Welcome />
       </div>
@@ -13,7 +12,7 @@ function App() {
       <Services />
       <Transactions />
       <Footer />
-    </>
+    </div>
   )
 }
 
