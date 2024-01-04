@@ -1,30 +1,17 @@
-# React + TypeScript + Vite
+# ReactCoin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a project focused on Web3 and it's part of studies of DApps.
+</br>
+The first idea is testing a Ethereum transaction between two accounts, using a Smart Contract to make the transactions.
 
-Currently, two official plugins are available:
+Stack: React, Typescript, Solidity, Hardhat, Alchemy, Ether.js, MetaMask.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How to Use
+You must install [MetaMask](https://metamask.io/) and create a wallet. We're using a Sepolia Test Network.
+![img.png](img.png)
 
-## Expanding the ESLint configuration
+You can use this [Faucet](https://www.infura.io/faucet/sepolia) to get a test ether.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## References
+App made based on [Javascript Mastery](https://www.youtube.com/watch?v=Wn_Kb3MR_cU) and general BlockChain studies.
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
