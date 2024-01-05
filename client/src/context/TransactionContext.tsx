@@ -29,6 +29,13 @@ export const TransactionProvider = ({ children }: {children: any}) => {
     }
 
     useEffect(() => {
+        checkIfWalletIsConnected()
+            .then(() => {
+                checkIfTransactionsExists()
+            })
+    }, []);
+
+    useEffect(() => {
         getWalletBalance()
         getAllTransactions()
     }, [currentAccount]);
@@ -41,6 +48,10 @@ export const TransactionProvider = ({ children }: {children: any}) => {
         try {
             if (!ethereum) {
                 return alert('Please install metamask!')
+            }
+            if (!currentAccount) {
+                setTransactions([])
+                return
             }
             const transactionContract = getEthereumContract()
             const availableTransactions = await transactionContract.getAllTransactions()
@@ -166,13 +177,6 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             setLoadingPageMessage(undefined)
         }
     }
-
-    useEffect(() => {
-        checkIfWalletIsConnected()
-            .then(() => {
-                checkIfTransactionsExists()
-            })
-    }, []);
 
     return (
         <TransactionContext.Provider value={{
