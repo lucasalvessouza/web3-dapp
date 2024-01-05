@@ -5,9 +5,9 @@ import { AiOutlineClose } from "react-icons/ai"
 import logo from "../../../images/logo.png"
 import { TransactionContext } from "../../context/TransactionContext.tsx";
 
-const NavbarItem = ({ title, classProps, id }: { title: string, id: string, classProps?: string }) => {
+const NavbarItem = ({ title, classProps, href, target }: { title: string, href: string, classProps?: string, target?: string }) => {
     return (
-        <a href={`#${id}`}>
+        <a href={href} target={target}>
             <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>
         </a>
     )
@@ -19,15 +19,27 @@ const Navbar = () => {
     const navbarItems = [
         {
             title: "My Wallet",
-            id: "wallet"
+            href: "wallet"
         },
         {
             title: "Products",
-            id: "products"
+            href: "products"
         },
         {
             title: "Transactions",
-            id: "transactions"
+            href: "transactions"
+        },
+        {
+            title: "Github Repo",
+            id: "github",
+            href: "https://github.com/lucasalvessouza",
+            target: "_blank"
+        },
+        {
+            title: "Linkedin",
+            id: "linkedin",
+            href: "https://www.linkedin.com/in/lucas-alves-s/",
+            target: "_blank"
         }
     ]
     return (
@@ -37,7 +49,7 @@ const Navbar = () => {
             </div>
             <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
                 {navbarItems.map((item: any, index: number) => (
-                    <NavbarItem title={item.title} id={item.id} key={item + index} />
+                    <NavbarItem title={item.title} href={item.href} key={item + index} target={item.target} />
                 ))}
                 <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd] font-bold">
                     ETH: {walletBalance}
@@ -56,7 +68,7 @@ const Navbar = () => {
                             <AiOutlineClose onClick={() => setToggleMenu(false)}/>
                         </li>
                         {navbarItems.map((item: any, index: number) => (
-                            <NavbarItem title={item.title} id={item.id} key={item + index} classProps="my-2 text-lg" />
+                            <NavbarItem title={item.title} href={item.href} key={item + index} target={item.target} classProps="my-2 text-lg" />
                         ))}
                     </ul>
                 )}
