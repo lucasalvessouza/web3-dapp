@@ -19,15 +19,15 @@ const Navbar = () => {
     const navbarItems = [
         {
             title: "My Wallet",
-            href: "wallet"
+            href: "#wallet"
         },
         {
             title: "Products",
-            href: "products"
+            href: "#products"
         },
         {
             title: "Transactions",
-            href: "transactions"
+            href: "#transactions"
         },
         {
             title: "Github Repo",
