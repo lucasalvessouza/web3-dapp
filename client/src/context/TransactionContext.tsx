@@ -16,13 +16,19 @@ const getEthereumContract  = () => {
 export const TransactionProvider = ({ children }: {children: any}) => {
     const [currentAccount, setCurrentAccount] = useState<any>()
     const [isLoading, setIsLoading] = useState(false)
+    const [isWalletLoading, setIsWalletLoading] = useState(false)
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
     const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" })
     const [transactions, setTransactions] = useState([])
+    const [walletBalance, setWalletBalance] = useState<string | Number>('-')
 
     const handleChange = (e: any, name: string) => {
         setFormData((prevState) => ({ ...prevState, [name]: e.target.value }))
     }
+
+    useEffect(() => {
+        getWalletBalance()
+    }, [currentAccount]);
 
     const getAllTransactions = async () => {
         try {
@@ -63,18 +69,44 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             throw new Error("No ethereum object")
         }
     }
+    const getWalletBalance = async () => {
+        if (!currentAccount) {
+            return
+        }
+        const balance = await ethereum.request({ method: 'eth_getBalance', params: [currentAccount] })
+        setWalletBalance(parseInt(balance, 16) / Math.pow(10, 18))
+    }
 
     const connectWallet = async () => {
         try {
             if(!ethereum) {
                 return alert('Please install metamask!')
             }
+            setIsWalletLoading(true)
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
             setCurrentAccount(accounts[0])
         } catch (error) {
             console.log(error)
             throw new Error("No ethereum object")
+        } finally {
+            setIsWalletLoading(false)
         }
+    }
+
+    const disconnectedWallet = async () => {
+        if(!ethereum) {
+            return alert('Please install metamask!')
+        }
+        await ethereum.request({
+            "method": "wallet_revokePermissions",
+            "params": [
+                {
+                    "eth_accounts": {}
+                }
+            ]
+        })
+        setCurrentAccount(undefined)
+        setWalletBalance('-')
     }
 
     const checkIfTransactionsExists = async () => {
@@ -127,12 +159,15 @@ export const TransactionProvider = ({ children }: {children: any}) => {
 
     useEffect(() => {
         checkIfWalletIsConnected()
-        checkIfTransactionsExists()
+            .then(() => {
+                checkIfTransactionsExists()
+            })
     }, []);
 
     return (
         <TransactionContext.Provider value={{
             connectWallet,
+            disconnectedWallet,
             currentAccount,
             formData,
             setFormData,
@@ -140,7 +175,9 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             sendTransaction,
             isLoading,
             transactionCount,
-            transactions
+            transactions,
+            walletBalance,
+            isWalletLoading
         }}>
             {children}
         </TransactionContext.Provider>

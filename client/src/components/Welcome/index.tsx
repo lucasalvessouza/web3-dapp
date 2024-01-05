@@ -1,4 +1,5 @@
 import { AiFillPlayCircle } from 'react-icons/ai'
+import { PiPlugsConnectedBold } from 'react-icons/pi'
 import { SiEthereum } from 'react-icons/si'
 import { BsInfoCircle } from 'react-icons/bs'
 
@@ -6,7 +7,7 @@ import { TransactionContext } from '../../context/TransactionContext.tsx'
 
 import { Loader } from '../index.tsx'
 import { useContext } from "react";
-import { shortenAddress } from "../../utils/shortenAddress.ts";
+import {shortenAddress} from "../../utils/shortenAddress.ts";
 
 
 const companyCommonStyles = "min-h-[70px] sm:px-0 px-2 sm:min-w-[120px] flex justify-center items-center border-[0.5px] border-gray-400 text-sm font-light text-white";
@@ -21,10 +22,37 @@ const Input = ({ placeholder, name, type, value, handleChange }: { placeholder: 
         className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
     />
 );
+
+const getButtonIcon = (currentAccount: string) => {
+    return !currentAccount
+        ? <AiFillPlayCircle className="text-white mr-2" />
+        : <PiPlugsConnectedBold className="text-white mr-2" />
+}
+const getButtonText = (currentAccount: string) => {
+    return (
+        <p className="text-white text-base font-semibold">
+            {!currentAccount
+                ? "Connect Wallet"
+                : "Wallet Connected"}
+        </p>
+    )
+}
+
+const getButtonBackground = (currentAccount: string) => !currentAccount ? 'bg-cyan-500 hover:bg-cyan-600' : 'bg-violet-500 hover:bg-violet-600'
+
 const Welcome = () => {
-    const { connectWallet, currentAccount, formData, handleChange, sendTransaction, isLoading } = useContext(TransactionContext)
+    const {
+        connectWallet,
+        currentAccount,
+        formData,
+        handleChange,
+        sendTransaction,
+        isLoading,
+        disconnectedWallet,
+        isWalletLoading
+    } = useContext(TransactionContext)
     const handleSubmit = (e: any) => {
-        const { addressTo, amount, keyword, message } = formData
+        const {addressTo, amount, keyword, message } = formData
         e.preventDefault()
 
         if (!addressTo || !amount || !keyword || !message) {
@@ -44,18 +72,22 @@ const Welcome = () => {
                     <p className="text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base">
                         Explore the crypto world. Buy and sell cryptocurrencies easily on Krypto.
                     </p>
-                    {!currentAccount && (
-                        <button
-                            type="button"
-                            onClick={connectWallet}
-                            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd] w-full"
-                        >
-                            <AiFillPlayCircle className="text-white mr-2"/>
-                            <p className="text-white text-base font-semibold">
-                                Connect Wallet
-                            </p>
-                        </button>
-                    )}
+                    <button
+                        type="button"
+                        onClick={!currentAccount ? connectWallet : disconnectedWallet}
+                        className={`flex flex-row justify-center items-center my-5 ${getButtonBackground(currentAccount)} p-3 rounded-full cursor-pointer w-full`}
+                    >
+
+                        {isWalletLoading
+                            ? <Loader width={5} color="white" />
+                            :
+                              <>
+                                  {getButtonIcon(currentAccount)}
+                                  {getButtonText(currentAccount)}
+                              </>
+
+                        }
+                    </button>
 
                     <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
                         <div className={`rounded-tl-2xl ${companyCommonStyles}`}>
