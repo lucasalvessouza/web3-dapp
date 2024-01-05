@@ -30,7 +30,12 @@ export const TransactionProvider = ({ children }: {children: any}) => {
 
     useEffect(() => {
         getWalletBalance()
+        getAllTransactions()
     }, [currentAccount]);
+
+    useEffect(() => {
+        getWalletBalance()
+    }, [transactions]);
 
     const getAllTransactions = async () => {
         try {
@@ -39,15 +44,18 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             }
             const transactionContract = getEthereumContract()
             const availableTransactions = await transactionContract.getAllTransactions()
+
             setTransactions(
-                availableTransactions.map((transaction: any) => ({
-                    addressTo: transaction.receiver,
-                    addressFrom: transaction.sender,
-                    timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
-                    message: transaction.message,
-                    keyword: transaction.keyword,
-                    amount: useEthAmountParser(transaction.amount._hex, 4)
-                }))
+                availableTransactions
+                    .filter((transaction: any) => transaction.sender.toUpperCase() === currentAccount.toUpperCase())
+                    .map((transaction: any) => ({
+                        addressTo: transaction.receiver,
+                        addressFrom: transaction.sender,
+                        timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
+                        message: transaction.message,
+                        keyword: transaction.keyword,
+                        amount: useEthAmountParser(transaction.amount._hex, 4)
+                    }))
             )
         } catch (error) {
             console.log(error)
@@ -65,7 +73,6 @@ export const TransactionProvider = ({ children }: {children: any}) => {
                 return
             }
             setCurrentAccount(accounts[0])
-            getAllTransactions()
         } catch (error) {
             console.log(error)
             throw new Error("No ethereum object")
@@ -87,7 +94,6 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             setIsWalletLoading(true)
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
             setCurrentAccount(accounts[0])
-            getAllTransactions()
         } catch (error) {
             console.log(error)
             throw new Error("No ethereum object")
