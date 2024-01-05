@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react"
 import { ethers } from "ethers"
 
-import { contractABI, contractAddress } from "../utils/contants.tsx"
+import {commonSellerAddress, contractABI, contractAddress} from "../utils/contants.tsx"
+import useEthAmountParser from "../hooks/useEthAmountParser.tsx";
 
 export const TransactionContext = React.createContext<any>({})
 
@@ -17,6 +18,7 @@ export const TransactionProvider = ({ children }: {children: any}) => {
     const [currentAccount, setCurrentAccount] = useState<any>()
     const [isLoading, setIsLoading] = useState(false)
     const [isWalletLoading, setIsWalletLoading] = useState(false)
+    const [loadingPageMessage, setLoadingPageMessage] = useState<string|undefined>(undefined)
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
     const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" })
     const [transactions, setTransactions] = useState([])
@@ -44,7 +46,7 @@ export const TransactionProvider = ({ children }: {children: any}) => {
                     timestamp: new Date(transaction.timestamp.toNumber() * 1000).toLocaleString(),
                     message: transaction.message,
                     keyword: transaction.keyword,
-                    amount: parseInt(transaction.amount._hex) * (10 ** 18)
+                    amount: useEthAmountParser(transaction.amount._hex, 4)
                 }))
             )
         } catch (error) {
@@ -74,7 +76,7 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             return
         }
         const balance = await ethereum.request({ method: 'eth_getBalance', params: [currentAccount] })
-        setWalletBalance(parseInt(balance, 16) / Math.pow(10, 18))
+        setWalletBalance(useEthAmountParser(balance, 4))
     }
 
     const connectWallet = async () => {
@@ -121,12 +123,12 @@ export const TransactionProvider = ({ children }: {children: any}) => {
         }
     }
 
-    const sendTransaction = async () => {
+    const sendTransaction = async ({ amount, keyword, message }: { amount: string, keyword: string, message: string }) => {
         try {
             if(!ethereum) {
                 return alert('Please install metamask!')
             }
-            const { addressTo, amount, keyword, message } = formData
+            setLoadingPageMessage("Your purchase is being processed")
             const transactionContract = getEthereumContract()
             const parsedAmount = ethers.utils.parseEther(amount)
 
@@ -134,12 +136,12 @@ export const TransactionProvider = ({ children }: {children: any}) => {
                 method: 'eth_sendTransaction',
                 params: [{
                     from: currentAccount,
-                    to: addressTo,
+                    to: commonSellerAddress,
                     gas: '0x5208', // 21000 GWEI
                     value: parsedAmount._hex
                 }]
             })
-            const transactionHash = await transactionContract.addToBlockChain(addressTo, parsedAmount, message, keyword)
+            const transactionHash = await transactionContract.addToBlockChain(commonSellerAddress, parsedAmount, message, keyword)
 
             setIsLoading(true)
             console.log(`Loading - ${transactionHash.hash}`)
@@ -149,11 +151,12 @@ export const TransactionProvider = ({ children }: {children: any}) => {
 
             const transactionCount = await transactionContract.getTransactionCount()
             setTransactionCount(transactionCount.toNumber())
-
-            window.location.reload()
+            getAllTransactions()
         } catch (error) {
             console.log(error)
             throw new Error("No ethereum object")
+        } finally {
+            setLoadingPageMessage(undefined)
         }
     }
 
@@ -177,7 +180,8 @@ export const TransactionProvider = ({ children }: {children: any}) => {
             transactionCount,
             transactions,
             walletBalance,
-            isWalletLoading
+            isWalletLoading,
+            loadingPageMessage
         }}>
             {children}
         </TransactionContext.Provider>
