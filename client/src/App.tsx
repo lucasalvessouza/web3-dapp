@@ -1,4 +1,4 @@
-import { Navbar, Footer, Welcome, Transactions, Services } from './components'
+import { Navbar, Footer, Welcome, Transactions, Services, Products, PageLoading } from './components'
 
 function App() {
 
@@ -9,8 +9,10 @@ function App() {
         <Welcome />
       </div>
       <Services />
+      <Products />
       <Transactions />
       <Footer />
+      <PageLoading />
     </div>
   )
 }
