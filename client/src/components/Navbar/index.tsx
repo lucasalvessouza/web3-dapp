@@ -3,25 +3,41 @@ import { HiMenuAlt4 } from "react-icons/hi"
 import { AiOutlineClose } from "react-icons/ai"
 
 import logo from "../../../images/logo.png"
-import {TransactionContext} from "../../context/TransactionContext.tsx";
+import { TransactionContext } from "../../context/TransactionContext.tsx";
 
-const NavbarItem = ({ title, classProps }: { title: string, classProps?: string }) => {
+const NavbarItem = ({ title, classProps, id }: { title: string, id: string, classProps?: string }) => {
     return (
-        <li className={`mx-4 cursor-pointer ${classProps}`}>{ title }</li>
+        <a href={`#${id}`}>
+            <li className={`mx-4 cursor-pointer ${classProps}`}>{title}</li>
+        </a>
     )
 }
 
 const Navbar = () => {
     const [toggleMenu, setToggleMenu] = useState<boolean>(false)
     const {walletBalance} = useContext(TransactionContext)
+    const navbarItems = [
+        {
+            title: "My Wallet",
+            id: "wallet"
+        },
+        {
+            title: "Products",
+            id: "products"
+        },
+        {
+            title: "Transactions",
+            id: "transactions"
+        }
+    ]
     return (
         <nav className="w-full flex md:justify-center justify-between items-center p-4">
             <div className="md:flex-[0.5] flex-initial justify-center items-center">
                 <img src={logo} alt={"logo"} className="w-32 cursor-pointer" />
             </div>
             <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
-                {["My Wallet", "Products", "Transactions"].map((item: string, index: number) => (
-                    <NavbarItem title={item} key={item + index}/>
+                {navbarItems.map((item: any, index: number) => (
+                    <NavbarItem title={item.title} id={item.id} key={item + index} />
                 ))}
                 <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd] font-bold">
                     ETH: {walletBalance}
@@ -39,8 +55,8 @@ const Navbar = () => {
                         <li className="text-xl w-full my-2">
                             <AiOutlineClose onClick={() => setToggleMenu(false)}/>
                         </li>
-                        {["My Wallet", "Products", "Transactions"].map((item: string, index: number) => (
-                            <NavbarItem title={item} key={item + index} classProps="my-2 text-lg"/>
+                        {navbarItems.map((item: any, index: number) => (
+                            <NavbarItem title={item.title} id={item.id} key={item + index} classProps="my-2 text-lg" />
                         ))}
                     </ul>
                 )}
