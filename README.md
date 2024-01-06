@@ -1,4 +1,7 @@
-<img alt="Screen1" src="client/images/logo.png" width="200px"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/lucasalvessouza/web3-dapp/main/client/images/logo.png" width="200">
+  <img alt="CryptoCart logo" src="https://raw.githubusercontent.com/lucasalvessouza/web3-dapp/main/client/images/logo_black.png">
+</picture>
 
 This is a project focused on Web3 and it's part of studies of DApps.
 </br>
