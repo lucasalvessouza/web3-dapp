@@ -75,7 +75,7 @@ const Products = () => {
             amount,
             keyword,
             message
-        }).then(() => alert(`Woot woot! Your order is on its way!`))
+        }).then(() => alert(`Woot woot! Transaction completed!`))
     }
 
     return (

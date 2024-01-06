@@ -32,7 +32,7 @@ const Navbar = () => {
         {
             title: "Github Repo",
             id: "github",
-            href: "https://github.com/lucasalvessouza",
+            href: "https://github.com/lucasalvessouza/web3-dapp ",
             target: "_blank"
         },
         {

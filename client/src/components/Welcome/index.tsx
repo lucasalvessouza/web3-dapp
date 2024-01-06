@@ -45,7 +45,15 @@ const Welcome = () => {
                         Fast Marketplace <br/> using Crypto
                     </h1>
                     <p className="text-left mt-5 text-white font-light md:w-9/12 w-11/12 text-base">
-                        Explore the crypto world. Buy a marketplace easily and directly on CryptoCart.
+
+                        Discover this demonstration decentralized application (Demo DApp) built with Solidity, Hardhat, Alchemy, Ethers.js, and React. Steps to use:
+                        <p>1. Register an account on MetaMask</p>
+                        <p>2. Connect to the Sepolia Test Network</p>
+                        <p>3. Next, acquire testnet Ether (ETH) from the
+                            <a className="font-bold cursor-pointer" href="https://sepoliafaucet.com/" target="_blank"> Sepolia Faucet website </a> or
+                            <a className="font-bold cursor-pointer" href="https://www.infura.io/faucet/sepolia" target="_blank"> this options as well</a>.
+                            Have a great experience!</p>
+
                     </p>
 
                     <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
@@ -59,7 +67,7 @@ const Welcome = () => {
                         <div className={`sm:rounded-bl-2xl ${companyCommonStyles}`}>
                             Web 3.0
                         </div>
-                        <div className={companyCommonStyles}>Low Fees</div>
+                        <div className={companyCommonStyles}>Sepolia Network</div>
                         <div className={`rounded-br-2xl ${companyCommonStyles}`}>
                             Blockchain
                         </div>

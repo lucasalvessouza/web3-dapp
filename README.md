@@ -7,6 +7,8 @@ The purchase is simulated by a transaction between two accounts.
 
 <b>It's live! You can access [here](https://web3-dapp-psi.vercel.app/)</b>
 
+<b>[Here is a quick video explaning about the application](https://www.loom.com/share/61b00c3fbb6f4c87be290f992223854b?sid=8a1de101-7ac8-4d31-9081-dc4b29718327)</b>
+
 <img alt="Screen1" src="client/md/img_4.png" width="900px"/>
 <img alt="Screen1" src="client/md/img_2.png" width="900px"/>
 

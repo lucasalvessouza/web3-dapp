@@ -31,8 +31,7 @@ const TransactionsCard = ({ addressTo, timestamp, keyword, amount }: Transaction
 
     return (
         <div
-            className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transform transition duration-500 hover:scale-105"
-            id="transactions">
+            className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transform transition duration-500 hover:scale-105">
             <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
                 <img
                     className="object-cover"
@@ -73,7 +72,7 @@ const Transactions = () => {
     const {transactions, currentAccount} = useContext(TransactionContext);
 
     return (
-        <div className="flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions">
+        <div className="flex w-full justify-center items-center 2xl:px-20 gradient-bg-transactions" id="transactions">
             <div className="flex flex-col md:p-12 py-12 px-4">
             {currentAccount ? (
                     <h3 className="text-white text-3xl text-center my-2">
